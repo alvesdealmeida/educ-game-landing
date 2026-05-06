@@ -1,0 +1,682 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Plataforma EDUC Games — Jogos Educacionais para Escolas Públicas</title>
+<meta name="description" content="Jogos educacionais digitais alinhados à BNCC para escolas públicas e redes municipais. Solução completa para educação lúdica e digital.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,400;0,600;0,700;1,400&family=DM+Sans:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --verde: #1a7a4a;
+    --verde-claro: #25a065;
+    --verde-bg: #edf7f2;
+    --amarelo: #f5c842;
+    --amarelo-escuro: #d4a80c;
+    --azul: #1e3a5f;
+    --azul-medio: #2d5986;
+    --branco: #fdfcf8;
+    --cinza-texto: #2c2c2c;
+    --cinza-leve: #f4f3ef;
+    --cinza-medio: #888;
+    --borda: #e0ddd5;
+    --sombra: 0 2px 24px rgba(26,122,74,.10);
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--branco);
+    color: var(--cinza-texto);
+    line-height: 1.65;
+    overflow-x: hidden;
+  }
+
+  /* ── NAV ── */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    background: rgba(253,252,248,.95);
+    backdrop-filter: blur(8px);
+    border-bottom: 1px solid var(--borda);
+    padding: .75rem 2rem;
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  .nav-logo {
+    font-family: 'Fraunces', serif;
+    font-weight: 700; font-size: 1.25rem;
+    color: var(--verde);
+    text-decoration: none;
+    display: flex; align-items: center; gap: .5rem;
+  }
+  .nav-logo span { color: var(--azul); }
+  .nav-links { display: flex; gap: 2rem; align-items: center; }
+  .nav-links a {
+    font-size: .9rem; color: var(--cinza-texto); text-decoration: none;
+    font-weight: 500; transition: color .2s;
+  }
+  .nav-links a:hover { color: var(--verde); }
+  .btn-nav {
+    background: var(--verde);
+    color: #fff; border-radius: 6px;
+    padding: .5rem 1.25rem; font-size: .9rem; font-weight: 500;
+    text-decoration: none; transition: background .2s;
+  }
+  .btn-nav:hover { background: var(--verde-claro); color: #fff; }
+
+  /* ── HERO ── */
+  .hero {
+    padding: 7rem 2rem 4rem;
+    max-width: 1100px; margin: 0 auto;
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 3rem; align-items: center;
+    min-height: 90vh;
+  }
+  .hero-badge {
+    display: inline-flex; align-items: center; gap: .5rem;
+    background: var(--verde-bg); color: var(--verde);
+    border: 1px solid #a8dcc3; border-radius: 20px;
+    padding: .35rem 1rem; font-size: .82rem; font-weight: 500;
+    margin-bottom: 1.5rem;
+  }
+  .hero-badge::before { content: '●'; font-size: .6rem; }
+  .hero h1 {
+    font-family: 'Fraunces', serif;
+    font-size: clamp(2.2rem, 4vw, 3.2rem);
+    line-height: 1.15; font-weight: 700;
+    color: var(--azul);
+    margin-bottom: 1.25rem;
+  }
+  .hero h1 em {
+    font-style: italic; color: var(--verde);
+  }
+  .hero p {
+    font-size: 1.05rem; color: #555;
+    max-width: 480px; margin-bottom: 2rem;
+    line-height: 1.75;
+  }
+  .hero-btns { display: flex; gap: 1rem; flex-wrap: wrap; }
+  .btn-prim {
+    background: var(--verde); color: #fff;
+    padding: .85rem 2rem; border-radius: 8px;
+    font-weight: 500; font-size: 1rem;
+    text-decoration: none; transition: background .2s, transform .15s;
+    display: inline-flex; align-items: center; gap: .5rem;
+  }
+  .btn-prim:hover { background: var(--verde-claro); transform: translateY(-1px); }
+  .btn-sec {
+    background: transparent; color: var(--azul);
+    padding: .85rem 1.75rem; border-radius: 8px;
+    border: 1.5px solid var(--azul);
+    font-weight: 500; font-size: 1rem;
+    text-decoration: none; transition: .2s;
+    display: inline-flex; align-items: center; gap: .5rem;
+  }
+  .btn-sec:hover { background: var(--azul); color: #fff; }
+
+  /* Hero card visual */
+  .hero-visual {
+    position: relative;
+    background: var(--azul);
+    border-radius: 20px;
+    padding: 2rem;
+    overflow: hidden;
+    min-height: 380px;
+    display: flex; flex-direction: column; justify-content: flex-end;
+  }
+  .hero-visual::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: radial-gradient(ellipse at 30% 20%, rgba(37,160,101,.35) 0%, transparent 60%);
+  }
+  .games-grid {
+    display: grid; grid-template-columns: repeat(3, 1fr);
+    gap: .6rem; margin-bottom: 1.25rem;
+    position: relative; z-index: 1;
+  }
+  .game-chip {
+    background: rgba(255,255,255,.12);
+    border: 1px solid rgba(255,255,255,.2);
+    border-radius: 10px; padding: .6rem .5rem;
+    text-align: center; font-size: .72rem;
+    color: rgba(255,255,255,.9); font-weight: 500;
+    backdrop-filter: blur(4px);
+  }
+  .game-chip .emoji { font-size: 1.4rem; display: block; margin-bottom: .25rem; }
+  .hero-stat-row {
+    display: flex; gap: 1rem; position: relative; z-index: 1;
+  }
+  .hero-stat {
+    flex: 1; background: rgba(255,255,255,.1);
+    border-radius: 10px; padding: .75rem;
+    text-align: center;
+    border: 1px solid rgba(255,255,255,.15);
+  }
+  .hero-stat .num {
+    font-family: 'Fraunces', serif;
+    font-size: 1.4rem; font-weight: 700; color: var(--amarelo);
+  }
+  .hero-stat .lbl { font-size: .72rem; color: rgba(255,255,255,.75); }
+  .bncc-tag {
+    position: absolute; top: 1.25rem; right: 1.25rem;
+    background: var(--amarelo); color: var(--azul);
+    font-size: .72rem; font-weight: 700;
+    padding: .3rem .8rem; border-radius: 20px;
+    z-index: 2;
+  }
+
+  /* ── NÚMEROS ── */
+  .numeros {
+    background: var(--cinza-leve);
+    border-top: 1px solid var(--borda);
+    border-bottom: 1px solid var(--borda);
+    padding: 2.5rem 2rem;
+  }
+  .numeros-inner {
+    max-width: 1100px; margin: 0 auto;
+    display: grid; grid-template-columns: repeat(4, 1fr);
+    gap: 2rem; text-align: center;
+  }
+  .num-item .n {
+    font-family: 'Fraunces', serif;
+    font-size: 2.2rem; font-weight: 700; color: var(--verde);
+  }
+  .num-item .l { font-size: .85rem; color: #666; margin-top: .2rem; }
+
+  /* ── SEÇÕES ── */
+  section { padding: 5rem 2rem; }
+  .sec-inner { max-width: 1100px; margin: 0 auto; }
+  .sec-label {
+    font-size: .78rem; font-weight: 600; letter-spacing: .1em;
+    text-transform: uppercase; color: var(--verde);
+    margin-bottom: .75rem;
+  }
+  .sec-title {
+    font-family: 'Fraunces', serif;
+    font-size: clamp(1.7rem, 3vw, 2.4rem);
+    font-weight: 700; color: var(--azul);
+    margin-bottom: 1rem; line-height: 1.2;
+  }
+  .sec-sub { font-size: 1rem; color: #666; max-width: 580px; line-height: 1.7; }
+
+  /* ── BENEFÍCIOS ── */
+  .beneficios-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1.5rem; margin-top: 3rem;
+  }
+  .bene-card {
+    background: #fff; border: 1px solid var(--borda);
+    border-radius: 14px; padding: 1.75rem;
+    transition: box-shadow .2s, transform .2s;
+  }
+  .bene-card:hover { box-shadow: var(--sombra); transform: translateY(-2px); }
+  .bene-icon {
+    width: 48px; height: 48px; border-radius: 12px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.4rem; margin-bottom: 1rem;
+  }
+  .bene-icon.verde { background: var(--verde-bg); }
+  .bene-icon.azul { background: #e8eff7; }
+  .bene-icon.amarelo { background: #fdf6dc; }
+  .bene-card h3 {
+    font-family: 'Fraunces', serif;
+    font-size: 1.1rem; font-weight: 600;
+    color: var(--azul); margin-bottom: .5rem;
+  }
+  .bene-card p { font-size: .92rem; color: #666; line-height: 1.65; }
+
+  /* ── COMO FUNCIONA ── */
+  .como { background: var(--azul); color: #fff; }
+  .como .sec-title { color: #fff; }
+  .como .sec-label { color: var(--amarelo); }
+  .como .sec-sub { color: rgba(255,255,255,.75); }
+  .passos {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 1.5rem; margin-top: 3rem; counter-reset: passo;
+  }
+  .passo {
+    background: rgba(255,255,255,.08);
+    border: 1px solid rgba(255,255,255,.15);
+    border-radius: 14px; padding: 1.75rem;
+    position: relative;
+    counter-increment: passo;
+  }
+  .passo::before {
+    content: counter(passo, decimal-leading-zero);
+    display: block;
+    font-family: 'Fraunces', serif;
+    font-size: 2.5rem; font-weight: 700;
+    color: var(--amarelo); opacity: .6;
+    margin-bottom: .75rem; line-height: 1;
+  }
+  .passo h3 { font-size: 1rem; font-weight: 500; margin-bottom: .5rem; }
+  .passo p { font-size: .88rem; color: rgba(255,255,255,.7); line-height: 1.65; }
+
+  /* ── JOGOS ── */
+  .jogos-grid {
+    display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: 1rem; margin-top: 3rem;
+  }
+  .jogo-card {
+    background: #fff; border: 1px solid var(--borda);
+    border-radius: 14px; padding: 1.25rem 1rem;
+    text-align: center; text-decoration: none; color: var(--cinza-texto);
+    transition: box-shadow .2s, transform .2s;
+  }
+  .jogo-card:hover { box-shadow: var(--sombra); transform: translateY(-2px); }
+  .jogo-card .ico { font-size: 2.2rem; margin-bottom: .5rem; }
+  .jogo-card h4 { font-size: .9rem; font-weight: 500; color: var(--azul); margin-bottom: .3rem; }
+  .jogo-card .tag {
+    display: inline-block; font-size: .72rem;
+    background: var(--verde-bg); color: var(--verde);
+    padding: .15rem .6rem; border-radius: 20px; font-weight: 500;
+  }
+
+  /* ── BNCC ── */
+  .bncc-section { background: var(--cinza-leve); }
+  .bncc-grid {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1rem; margin-top: 2.5rem;
+  }
+  .bncc-item {
+    background: #fff; border: 1px solid var(--borda);
+    border-radius: 12px; padding: 1.25rem;
+  }
+  .bncc-item .nivel {
+    font-size: .72rem; font-weight: 700; letter-spacing: .06em;
+    text-transform: uppercase; color: var(--verde); margin-bottom: .4rem;
+  }
+  .bncc-item h4 { font-size: .95rem; font-weight: 500; color: var(--azul); margin-bottom: .4rem; }
+  .bncc-item p { font-size: .82rem; color: #777; line-height: 1.55; }
+
+  /* ── CONTATO ── */
+  .contato-grid {
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 4rem; align-items: start; margin-top: 3rem;
+  }
+  .contato-info h3 {
+    font-family: 'Fraunces', serif;
+    font-size: 1.5rem; color: var(--azul); margin-bottom: 1rem;
+  }
+  .contato-info p { color: #666; line-height: 1.75; margin-bottom: 1.5rem; }
+  .contato-dados { display: flex; flex-direction: column; gap: .75rem; }
+  .contato-dado {
+    display: flex; align-items: center; gap: .75rem;
+    font-size: .95rem;
+  }
+  .contato-dado .icon {
+    width: 36px; height: 36px; background: var(--verde-bg);
+    border-radius: 8px; display: flex; align-items: center;
+    justify-content: center; font-size: 1rem; flex-shrink: 0;
+  }
+  .contato-dado a { color: var(--verde); text-decoration: none; font-weight: 500; }
+
+  .form-box {
+    background: #fff; border: 1px solid var(--borda);
+    border-radius: 16px; padding: 2rem;
+    box-shadow: var(--sombra);
+  }
+  .form-box h3 {
+    font-family: 'Fraunces', serif;
+    font-size: 1.2rem; color: var(--azul); margin-bottom: 1.5rem;
+  }
+  .form-group { margin-bottom: 1.25rem; }
+  .form-group label {
+    display: block; font-size: .85rem; font-weight: 500;
+    color: var(--cinza-texto); margin-bottom: .4rem;
+  }
+  .form-group input,
+  .form-group select,
+  .form-group textarea {
+    width: 100%; padding: .7rem 1rem;
+    border: 1.5px solid var(--borda); border-radius: 8px;
+    font-family: 'DM Sans', sans-serif; font-size: .95rem;
+    background: #fafaf8; color: var(--cinza-texto);
+    transition: border-color .2s;
+    outline: none;
+  }
+  .form-group input:focus,
+  .form-group select:focus,
+  .form-group textarea:focus { border-color: var(--verde); }
+  .form-group textarea { resize: vertical; min-height: 100px; }
+  .btn-form {
+    width: 100%; padding: .9rem;
+    background: var(--verde); color: #fff;
+    border: none; border-radius: 8px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 1rem; font-weight: 500; cursor: pointer;
+    transition: background .2s;
+  }
+  .btn-form:hover { background: var(--verde-claro); }
+
+  /* ── FOOTER ── */
+  footer {
+    background: var(--azul); color: rgba(255,255,255,.8);
+    padding: 2.5rem 2rem;
+    text-align: center; font-size: .88rem;
+  }
+  footer .flogo {
+    font-family: 'Fraunces', serif;
+    font-size: 1.3rem; color: #fff; font-weight: 700;
+    margin-bottom: .5rem;
+  }
+  footer a { color: var(--amarelo); text-decoration: none; }
+
+  /* ── RESPONSIVO ── */
+  @media (max-width: 768px) {
+    .hero { grid-template-columns: 1fr; padding: 5.5rem 1.25rem 3rem; min-height: auto; gap: 2rem; }
+    .hero-visual { min-height: 260px; }
+    .numeros-inner { grid-template-columns: repeat(2, 1fr); gap: 1.25rem; }
+    nav { padding: .75rem 1.25rem; }
+    .nav-links { display: none; }
+    .contato-grid { grid-template-columns: 1fr; gap: 2rem; }
+    section { padding: 3.5rem 1.25rem; }
+  }
+
+  /* ── ANIMAÇÕES ── */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .hero-badge, .hero h1, .hero p, .hero-btns {
+    animation: fadeUp .6s ease both;
+  }
+  .hero h1 { animation-delay: .1s; }
+  .hero p { animation-delay: .2s; }
+  .hero-btns { animation-delay: .3s; }
+  .hero-visual { animation: fadeUp .7s .15s ease both; }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a class="nav-logo" href="#">🎮 EDUC <span>Games</span></a>
+  <div class="nav-links">
+    <a href="#beneficios">Benefícios</a>
+    <a href="#jogos">Jogos</a>
+    <a href="#bncc">BNCC</a>
+    <a href="#contato" class="btn-nav">Solicitar apresentação</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section style="padding:0;">
+  <div class="hero">
+    <div class="hero-content">
+      <div class="hero-badge">Alinhado à BNCC — Computação</div>
+      <h1>Educação digital que <em>encanta</em> e ensina de verdade</h1>
+      <p>A Plataforma EDUC Games oferece jogos educacionais interativos para redes municipais e escolas públicas — sem necessidade de internet, sem instalação, pronto para usar em qualquer celular ou tablet.</p>
+      <div class="hero-btns">
+        <a href="https://alvesdealmeida.github.io/educMenu1/" target="_blank" class="btn-prim">
+          ▶ Experimentar os jogos
+        </a>
+        <a href="#contato" class="btn-sec">
+          ✉ Falar com a gente
+        </a>
+      </div>
+    </div>
+    <div class="hero-visual">
+      <div class="bncc-tag">✓ BNCC</div>
+      <div class="games-grid">
+        <div class="game-chip"><span class="emoji">🦆</span>Pato Matemático</div>
+        <div class="game-chip"><span class="emoji">🤖</span>RoboLab</div>
+        <div class="game-chip"><span class="emoji">🧩</span>Palavras</div>
+        <div class="game-chip"><span class="emoji">🌿</span>Folklore BR</div>
+        <div class="game-chip"><span class="emoji">🎯</span>Lógica</div>
+        <div class="game-chip"><span class="emoji">🗺️</span>Brasil Quiz</div>
+      </div>
+      <div class="hero-stat-row">
+        <div class="hero-stat"><div class="num">10+</div><div class="lbl">Jogos prontos</div></div>
+        <div class="hero-stat"><div class="num">100%</div><div class="lbl">Offline</div></div>
+        <div class="hero-stat"><div class="num">0$</div><div class="lbl">Instalação</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- NÚMEROS -->
+<div class="numeros">
+  <div class="numeros-inner">
+    <div class="num-item"><div class="n">73,9%</div><div class="l">dos brasileiros jogam games</div></div>
+    <div class="num-item"><div class="n">R$12,7bi</div><div class="l">mercado de games Brasil 2025</div></div>
+    <div class="num-item"><div class="n">100%</div><div class="l">funciona sem internet</div></div>
+    <div class="num-item"><div class="n">BNCC</div><div class="l">alinhado Computação Ed. Básica</div></div>
+  </div>
+</div>
+
+<!-- BENEFÍCIOS -->
+<section id="beneficios">
+  <div class="sec-inner">
+    <div class="sec-label">Por que escolher a EDUC Games</div>
+    <h2 class="sec-title">Uma solução pensada<br>para a realidade da escola pública</h2>
+    <p class="sec-sub">Desenvolvida por um professor da rede, cada detalhe da plataforma foi pensado para funcionar com os recursos que sua escola já tem.</p>
+    <div class="beneficios-grid">
+      <div class="bene-card">
+        <div class="bene-icon verde">📵</div>
+        <h3>Funciona sem internet</h3>
+        <p>Todos os jogos são PWA offline. Carregam uma vez e funcionam sem conexão — ideal para escolas com conectividade limitada.</p>
+      </div>
+      <div class="bene-card">
+        <div class="bene-icon azul">📱</div>
+        <h3>Qualquer celular ou tablet</h3>
+        <p>Otimizado para Android, que representa 88% dos dispositivos no Brasil. Sem necessidade de computador ou laboratório.</p>
+      </div>
+      <div class="bene-card">
+        <div class="bene-icon amarelo">🎓</div>
+        <h3>Alinhado à BNCC</h3>
+        <p>Cada jogo mapeia competências específicas da BNCC para Computação, do Ensino Fundamental I ao Ensino Médio.</p>
+      </div>
+      <div class="bene-card">
+        <div class="bene-icon verde">🇧🇷</div>
+        <h3>Conteúdo genuinamente brasileiro</h3>
+        <p>Folklore, geografia regional, cultura local e vocabulário em português — nada de conteúdo genérico importado.</p>
+      </div>
+      <div class="bene-card">
+        <div class="bene-icon azul">⚡</div>
+        <h3>Sem instalação, sem burocracia</h3>
+        <p>Acesso por link ou QR Code. O aluno abre no celular e já começa a jogar. Zero configuração para o professor.</p>
+      </div>
+      <div class="bene-card">
+        <div class="bene-icon amarelo">🏫</div>
+        <h3>Parceria com a secretaria</h3>
+        <p>Trabalhamos diretamente com secretarias de educação para capacitação de professores e relatórios pedagógicos.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- COMO FUNCIONA -->
+<section class="como" id="como">
+  <div class="sec-inner">
+    <div class="sec-label">Implantação simples</div>
+    <h2 class="sec-title">Da assinatura à sala de aula<br>em menos de uma semana</h2>
+    <p class="sec-sub">Nossa metodologia garante que professores e alunos estejam usando a plataforma em dias, não meses.</p>
+    <div class="passos">
+      <div class="passo">
+        <h3>Apresentação e diagnóstico</h3>
+        <p>Reunião com a equipe pedagógica para mapear necessidades e alinhar os jogos às disciplinas e séries.</p>
+      </div>
+      <div class="passo">
+        <h3>Acesso e configuração</h3>
+        <p>A escola recebe o link da plataforma e QR Codes personalizados. Zero instalação de software.</p>
+      </div>
+      <div class="passo">
+        <h3>Capacitação dos professores</h3>
+        <p>Oficina de 2h (presencial ou remota) com orientações pedagógicas e sugestões de sequências didáticas.</p>
+      </div>
+      <div class="passo">
+        <h3>Acompanhamento contínuo</h3>
+        <p>Suporte mensal, novos jogos incluídos no plano e relatórios de uso para gestores pedagógicos.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- JOGOS -->
+<section id="jogos">
+  <div class="sec-inner">
+    <div class="sec-label">Catálogo de jogos</div>
+    <h2 class="sec-title">Jogos que alunos querem jogar<br><em>e professores querem usar</em></h2>
+    <p class="sec-sub">Cada jogo combina diversão genuína com objetivos pedagógicos claros e relatório de desempenho.</p>
+    <div class="jogos-grid">
+      <a href="https://alvesdealmeida.github.io/educMenu1/" target="_blank" class="jogo-card">
+        <div class="ico">🦆</div>
+        <h4>Pato Matemático</h4>
+        <div class="tag">Matemática</div>
+      </a>
+      <a href="https://alvesdealmeida.github.io/educMenu1/" target="_blank" class="jogo-card">
+        <div class="ico">🤖</div>
+        <h4>RoboLab Academy</h4>
+        <div class="tag">Programação</div>
+      </a>
+      <a href="https://alvesdealmeida.github.io/educMenu1/" target="_blank" class="jogo-card">
+        <div class="ico">📖</div>
+        <h4>Pacman de Palavras</h4>
+        <div class="tag">Português</div>
+      </a>
+      <a href="https://alvesdealmeida.github.io/educMenu1/" target="_blank" class="jogo-card">
+        <div class="ico">🌿</div>
+        <h4>Folklore Brasileiro</h4>
+        <div class="tag">Cultura</div>
+      </a>
+      <a href="https://alvesdealmeida.github.io/educMenu1/" target="_blank" class="jogo-card">
+        <div class="ico">🗺️</div>
+        <h4>Bot & Araru</h4>
+        <div class="tag">Geografia</div>
+      </a>
+      <a href="https://alvesdealmeida.github.io/educMenu1/" target="_blank" class="jogo-card">
+        <div class="ico">♟️</div>
+        <h4>Damas 3D</h4>
+        <div class="tag">Lógica</div>
+      </a>
+      <a href="https://alvesdealmeida.github.io/educMenu1/" target="_blank" class="jogo-card">
+        <div class="ico">🧩</div>
+        <h4>Cubo Mágico</h4>
+        <div class="tag">Raciocínio</div>
+      </a>
+      <a href="https://alvesdealmeida.github.io/educMenu1/" target="_blank" class="jogo-card">
+        <div class="ico">🚀</div>
+        <h4>Super Missão Brasil</h4>
+        <div class="tag">Interdisciplinar</div>
+      </a>
+    </div>
+    <div style="text-align:center; margin-top:2rem;">
+      <a href="https://alvesdealmeida.github.io/educMenu1/" target="_blank" class="btn-prim">
+        Ver todos os jogos →
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- BNCC -->
+<section class="bncc-section" id="bncc">
+  <div class="sec-inner">
+    <div class="sec-label">Alinhamento curricular</div>
+    <h2 class="sec-title">Cada jogo mapeado<br>às competências da BNCC</h2>
+    <p class="sec-sub">A plataforma atende da Educação Infantil ao Ensino Médio, com competências específicas de Computação e Pensamento Computacional.</p>
+    <div class="bncc-grid">
+      <div class="bncc-item">
+        <div class="nivel">Ed. Infantil</div>
+        <h4>EI03CO01–11</h4>
+        <p>Algoritmos simples, sequências e padrões em atividades lúdicas.</p>
+      </div>
+      <div class="bncc-item">
+        <div class="nivel">Fund. I (1º–5º)</div>
+        <h4>EF01–05CO</h4>
+        <p>Lógica, algoritmos, estruturas de dados e codificação básica.</p>
+      </div>
+      <div class="bncc-item">
+        <div class="nivel">Fund. II (6º–9º)</div>
+        <h4>EF06–09CO</h4>
+        <p>Programação, recursão, redes digitais e criptografia introdutória.</p>
+      </div>
+      <div class="bncc-item">
+        <div class="nivel">Ensino Médio</div>
+        <h4>EM13CO01–26</h4>
+        <p>IA, ciência de dados, robótica, LGPD e complexidade algorítmica.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTATO -->
+<section id="contato">
+  <div class="sec-inner">
+    <div class="sec-label">Vamos conversar</div>
+    <h2 class="sec-title">Solicite uma apresentação<br>gratuita para sua escola</h2>
+    <div class="contato-grid">
+      <div class="contato-info">
+        <h3>Atendemos secretarias municipais, diretores e coordenadores pedagógicos</h3>
+        <p>Fazemos a apresentação da plataforma diretamente para sua equipe — presencial na região de Araruama/RJ ou por videochamada para todo o Brasil. Sem compromisso, sem custo.</p>
+        <p>Nossa proposta é feita sob medida para a realidade da sua rede: número de alunos, séries atendidas e objetivos pedagógicos.</p>
+        <div class="contato-dados">
+          <div class="contato-dado">
+            <div class="icon">✉</div>
+            <a href="mailto:contato.sebastiaoalves@educgamesedu.com">contato.sebastiaoalves@educgamesedu.com</a>
+          </div>
+          <div class="contato-dado">
+            <div class="icon">🌐</div>
+            <a href="https://alvesdealmeida.github.io/educMenu1/" target="_blank">Acessar a plataforma de jogos</a>
+          </div>
+          <div class="contato-dado">
+            <div class="icon">📍</div>
+            <span>Araruama, Rio de Janeiro — Brasil</span>
+          </div>
+          <div class="contato-dado">
+            <div class="icon">👨‍🏫</div>
+            <span>Prof. Sebastião Alves de Almeida</span>
+          </div>
+        </div>
+      </div>
+      <div class="form-box">
+        <h3>Solicitar apresentação</h3>
+        <form action="mailto:contato.sebastiaoalves@educgamesedu.com" method="GET" enctype="text/plain">
+          <div class="form-group">
+            <label>Nome completo *</label>
+            <input type="text" name="nome" placeholder="Seu nome" required>
+          </div>
+          <div class="form-group">
+            <label>Escola ou Secretaria *</label>
+            <input type="text" name="escola" placeholder="Nome da instituição" required>
+          </div>
+          <div class="form-group">
+            <label>Município / Estado *</label>
+            <input type="text" name="municipio" placeholder="Ex: Araruama, RJ" required>
+          </div>
+          <div class="form-group">
+            <label>Cargo</label>
+            <select name="cargo">
+              <option value="">Selecionar...</option>
+              <option>Diretor(a)</option>
+              <option>Coordenador(a) Pedagógico(a)</option>
+              <option>Secretário(a) de Educação</option>
+              <option>Professor(a)</option>
+              <option>Outro</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Mensagem</label>
+            <textarea name="mensagem" placeholder="Conte um pouco sobre sua escola e o que busca com a plataforma..."></textarea>
+          </div>
+          <button type="submit" class="btn-form">Enviar solicitação →</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="flogo">🎮 EDUC Games</div>
+  <p>Plataforma de jogos educacionais para escolas públicas brasileiras</p>
+  <p style="margin-top:.5rem;">
+    Desenvolvida por <strong style="color:#fff;">Prof. Sebastião Alves de Almeida</strong> ·
+    <a href="mailto:contato.sebastiaoalves@educgamesedu.com">contato.sebastiaoalves@educgamesedu.com</a>
+  </p>
+  <p style="margin-top:.75rem; font-size:.78rem; opacity:.6;">© 2025 Plataforma EDUC Games Educacional · Araruama, RJ · Brasil</p>
+</footer>
+
+</body>
+</html>
